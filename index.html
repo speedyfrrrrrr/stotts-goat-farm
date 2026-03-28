@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="theme-color" content="#FDF6E9"/>
+  <title>Stotts Goat Farm - Columbia, Kentucky</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cream:       #FDF6E9;
+      --cream-dark:  #F2E4C4;
+      --cream-mid:   #EDD5A3;
+      --brown:       #3B1F0A;
+      --brown-mid:   #7A4A28;
+      --brown-light: #B07D54;
+      --gold:        #C8841A;
+      --gold-light:  #DFA83A;
+      --gold-pale:   #F5E4B0;
+      --white:       #FFFEF9;
+      --text:        #2E1A08;
+      --text-light:  #7A5035;
+      --text-muted:  #A0784F;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Lora', Georgia, serif;
+      --font-ui:      'Raleway', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+    body { font-family: var(--font-body); background: var(--cream); color: var(--text); overflow-x: hidden; -webkit-text-size-adjust: 100%; }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.5;
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 0 2rem; }
+    .section { padding: 5rem 0; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .divider { display: flex; align-items: center; gap: 1rem; margin: 1.5rem auto; max-width: 340px; }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--gold); }
+    .divider-icon { color: var(--gold); font-size: 1.2rem; }
+
+    .section-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; text-align: center; color: var(--brown); line-height: 1.2; }
+    .section-subtitle { font-family: var(--font-ui); font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); text-align: center; margin-bottom: 0.5rem; }
+
+    .btn { display: inline-block; font-family: var(--font-ui); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.85rem 2.2rem; border-radius: 2px; cursor: pointer; transition: all 0.25s ease; border: 2px solid transparent; }
+    .btn-primary { background: var(--brown); color: var(--cream); border-color: var(--brown); }
+    .btn-primary:hover { background: var(--gold); border-color: var(--gold); color: var(--brown); }
+    .btn-outline { background: transparent; color: var(--brown); border-color: var(--brown); }
+    .btn-outline:hover { background: var(--brown); color: var(--cream); }
+    .btn-gold { background: var(--gold); color: var(--brown); border-color: var(--gold); }
+    .btn-gold:hover { background: var(--brown); color: var(--cream); border-color: var(--brown); }
+
+    /* NAV */
+    nav { background: var(--cream); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 12px rgba(59,31,10,0.10); border-bottom: 2px solid var(--cream-mid); }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 2rem; max-width: 1140px; margin: 0 auto; }
+    .nav-logo { display: flex; align-items: center; gap: 0.8rem; cursor: pointer; }
+    .nav-brand { display: flex; flex-direction: column; }
+    .nav-brand-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 900; color: var(--brown); letter-spacing: 0.08em; line-height: 1; }
+    .nav-brand-sub { font-family: var(--font-ui); font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); }
+    .nav-links { display: flex; gap: 0.25rem; list-style: none; }
+    .nav-links a { font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: var(--brown-mid); padding: 0.5rem 1rem; border-radius: 2px; transition: all 0.2s; cursor: pointer; display: block; }
+    .nav-links a:hover, .nav-links a.active { color: var(--brown); background: var(--cream-dark); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+    .hamburger span { width: 26px; height: 2px; background: var(--brown); border-radius: 2px; transition: all 0.3s; }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--cream); flex-direction: column; padding: 1rem; gap: 0; border-top: 1px solid var(--cream-mid); box-shadow: 0 4px 12px rgba(59,31,10,0.1); }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.75rem 1.2rem; border-radius: 2px; }
+    }
+
+    /* TOPBAR */
+    .topbar { background: var(--cream-dark); padding: 0.4rem 2rem; text-align: center; font-family: var(--font-ui); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; color: var(--brown-mid); border-bottom: 1px solid var(--cream-mid); }
+    .topbar a { color: var(--brown); font-weight: 700; }
+
+    /* HERO */
+    .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; background: var(--cream-dark); }
+    .hero-bg { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 0.35; }
+    .hero-bg-fallback { position: absolute; inset: 0; background: linear-gradient(150deg, #FDF6E9 0%, #F2E4C4 35%, #DEB87A 75%, #C8841A 100%); opacity: 1; }
+    .hero-content { position: relative; z-index: 2; text-align: center; width: 100%; padding: 4rem 2rem; animation: fadeUp 0.9s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-badge { display: inline-block; border: 1px solid var(--brown-light); color: var(--brown-mid); font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; padding: 0.4rem 1.4rem; margin-bottom: 1.5rem; background: rgba(253,246,233,0.55); }
+    .hero-title { font-family: var(--font-display); font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; color: var(--brown); line-height: 1.0; margin-bottom: 0.3rem; }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-subtitle { font-family: var(--font-display); font-size: clamp(1.2rem, 3vw, 2rem); font-weight: 400; font-style: italic; color: var(--brown-mid); margin-bottom: 1.5rem; }
+    .hero-tagline { font-family: var(--font-body); font-size: 1.05rem; color: var(--text-light); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .hero-scroll { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--brown-mid); font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; animation: bounce 2s ease infinite; }
+    .hero-scroll::after { content: '↓'; font-size: 1.2rem; }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+
+    .welcome-strip { background: var(--brown); padding: 1.2rem 2rem; text-align: center; }
+    .welcome-strip p { font-family: var(--font-ui); font-size: 0.9rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cream); }
+
+    /* HOME SECTIONS */
+    .home-about { background: var(--white); padding: 6rem 0; }
+    .home-about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .home-about-img { position: relative; }
+    .home-about-img img { width: 100%; height: 420px; object-fit: cover; border-radius: 2px; box-shadow: 12px 12px 0 var(--gold-pale), 14px 14px 0 1px var(--gold); }
+    .img-placeholder { width: 100%; height: 420px; background: var(--cream-dark); border-radius: 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; color: var(--brown-mid); font-family: var(--font-ui); font-size: 0.85rem; letter-spacing: 0.1em; border: 2px dashed var(--gold); box-shadow: 12px 12px 0 var(--gold-pale), 14px 14px 0 1px var(--gold); }
+    .img-placeholder span { font-size: 2.5rem; }
+    .home-about-text h3 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.2rem; color: var(--brown); }
+    .home-about-text p { font-size: 1rem; line-height: 1.8; color: var(--text-light); margin-bottom: 1rem; }
+
+    .home-product { background: var(--cream); padding: 6rem 0; }
+    .home-product-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .home-product-text h3 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1.2rem; color: var(--brown); }
+    .home-product-text p { font-size: 1rem; line-height: 1.8; color: var(--text-light); margin-bottom: 1.5rem; }
+    .home-product-text ul { list-style: none; margin-bottom: 1.5rem; }
+    .home-product-text ul li { font-family: var(--font-body); font-size: 0.95rem; color: var(--text-light); padding: 0.3rem 0; display: flex; align-items: center; gap: 0.6rem; }
+    .home-product-text ul li::before { content: '✦'; color: var(--gold); font-size: 0.65rem; }
+
+    /* STATS */
+    .stats-bar { background: var(--cream-dark); padding: 3.5rem 0; border-top: 2px solid var(--cream-mid); border-bottom: 2px solid var(--cream-mid); }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; text-align: center; }
+    .stat-item { padding: 1rem; }
+    .stat-num { font-family: var(--font-display); font-size: 3rem; font-weight: 900; color: var(--brown); display: block; line-height: 1; }
+    .stat-label { font-family: var(--font-ui); font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--brown-mid); margin-top: 0.4rem; }
+
+    /* PAGE HERO */
+    .page-hero { background: linear-gradient(160deg, var(--cream-dark) 0%, var(--cream-mid) 100%); padding: 5rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; border-bottom: 3px solid var(--gold-pale); }
+    .page-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at center, rgba(200,132,26,0.08) 0%, transparent 70%); }
+    .page-hero-label { font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .page-hero h1 { font-family: var(--font-display); font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 900; color: var(--brown); line-height: 1.1; position: relative; }
+    .page-hero p { font-family: var(--font-body); font-size: 1.05rem; color: var(--text-light); max-width: 560px; margin: 1rem auto 0; line-height: 1.7; position: relative; }
+
+    /* GOATS */
+    .goats-section { background: var(--cream); padding: 5rem 0; }
+    .goats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2.5rem; }
+    .goat-card { background: var(--white); border-radius: 2px; overflow: hidden; box-shadow: 0 4px 20px rgba(45,22,6,0.08); transition: transform 0.3s, box-shadow 0.3s; border-bottom: 3px solid var(--gold); }
+    .goat-card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(45,22,6,0.15); }
+    .goat-card-img { width: 100%; height: 260px; object-fit: cover; }
+    .goat-card-img-placeholder { width: 100%; height: 260px; background: var(--cream-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--brown-mid); font-family: var(--font-ui); font-size: 0.8rem; letter-spacing: 0.1em; gap: 0.4rem; border-bottom: 2px dashed var(--gold); }
+    .goat-card-img-placeholder span { font-size: 2.5rem; }
+    .goat-card-body { padding: 1.5rem; }
+    .goat-name { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--brown); margin-bottom: 0.25rem; }
+    .goat-breed { font-family: var(--font-ui); font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+    .goat-desc { font-size: 0.93rem; line-height: 1.7; color: var(--text-light); }
+
+    /* PRODUCTS — SHELF DISPLAY */
+    .products-section { background: var(--white); padding: 5rem 0; }
+    .products-intro { text-align: center; max-width: 700px; margin: 0 auto 3rem; }
+    .products-intro p { font-size: 1rem; line-height: 1.8; color: var(--text-light); margin-top: 1rem; }
+
+    .shelf-display { max-width: 920px; margin: 0 auto; background: var(--cream); border-radius: 4px; overflow: hidden; box-shadow: 0 8px 48px rgba(45,22,6,0.13); border-bottom: 4px solid var(--gold); }
+    .shelf-display-img { width: 100%; max-height: 620px; object-fit: cover; display: block; }
+    .shelf-display-img-placeholder { width: 100%; height: 520px; background: var(--cream-dark); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.75rem; color: var(--brown-mid); font-family: var(--font-ui); font-size: 0.9rem; letter-spacing: 0.1em; border-bottom: 2px dashed var(--gold); }
+    .shelf-display-img-placeholder span { font-size: 3.5rem; }
+    .shelf-display-body { padding: 2.75rem 3.5rem; text-align: center; }
+    .shelf-display-name { font-family: var(--font-display); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 700; color: var(--brown); margin-bottom: 0.6rem; }
+    .shelf-display-tagline { font-family: var(--font-display); font-size: 1.1rem; font-style: italic; color: var(--gold); margin-bottom: 1.25rem; }
+    .shelf-display-desc { font-size: 1rem; line-height: 1.85; color: var(--text-light); max-width: 640px; margin: 0 auto 1.75rem; }
+    .shelf-badges { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .shelf-badge { display: inline-block; background: var(--gold-pale); color: var(--brown); font-family: var(--font-ui); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 20px; }
+
+    /* SOAP BENEFITS */
+    .soap-benefits { background: var(--cream-dark); padding: 4rem 0; border-bottom: 2px solid var(--cream-mid); }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2rem; text-align: center; }
+    .benefit-item { padding: 1rem; }
+    .benefit-icon { font-size: 2.2rem; margin-bottom: 0.75rem; }
+    .benefit-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--brown); margin-bottom: 0.4rem; }
+    .benefit-text { font-family: var(--font-ui); font-size: 0.82rem; color: var(--text-light); line-height: 1.6; }
+
+    /* ABOUT */
+    .about-story { background: var(--white); padding: 5rem 0; }
+    .about-story-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-img-stack { position: relative; }
+    .about-img-main { width: 100%; height: 460px; object-fit: cover; border-radius: 2px; box-shadow: 0 8px 32px rgba(45,22,6,0.18); }
+    .about-text { padding-top: 1rem; }
+    .about-text h2 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 700; color: var(--brown); margin-bottom: 1.5rem; line-height: 1.2; }
+    .about-text p { font-size: 1rem; line-height: 1.85; color: var(--text-light); margin-bottom: 1.2rem; }
+    .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem; }
+    .value-card { background: var(--cream); padding: 1.5rem; border-left: 3px solid var(--gold); border-radius: 0 2px 2px 0; }
+    .value-card h4 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--brown); margin-bottom: 0.4rem; }
+    .value-card p { font-size: 0.88rem; line-height: 1.6; color: var(--text-light); margin: 0; }
+
+    /* CONTACT */
+    .map-embed { width: 100%; border-radius: 2px; overflow: hidden; box-shadow: 0 4px 20px rgba(45,22,6,0.12); }
+
+    /* FOOTER */
+    footer { background: var(--brown); padding: 4rem 0 2rem; }
+    .footer-inner { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 3rem; margin-bottom: 3rem; }
+    .footer-brand-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 900; color: var(--cream); margin-bottom: 0.4rem; }
+    .footer-brand-sub { font-family: var(--font-ui); font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; }
+    .footer-brand-desc { font-size: 0.88rem; line-height: 1.7; color: rgba(253,246,233,0.65); }
+    .footer-col h4 { font-family: var(--font-ui); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold-light); margin-bottom: 1rem; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a { font-family: var(--font-body); font-size: 0.88rem; color: rgba(253,246,233,0.65); cursor: pointer; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--gold-light); }
+    .footer-col address { font-style: normal; font-size: 0.9rem; line-height: 1.8; color: rgba(253,246,233,0.65); }
+    .footer-divider { border: none; border-top: 1px solid rgba(253,246,233,0.15); margin-bottom: 1.5rem; }
+    .footer-bottom { display: flex; align-items: center; justify-content: space-between; font-family: var(--font-ui); font-size: 0.75rem; color: rgba(253,246,233,0.35); flex-wrap: wrap; gap: 0.5rem; }
+    .footer-gold-bar { height: 4px; background: linear-gradient(90deg, var(--cream-dark), var(--gold-light), var(--gold), var(--gold-light), var(--cream-dark)); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .home-about-inner, .home-product-inner, .about-story-inner { grid-template-columns: 1fr; gap: 3rem; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .shelf-display-body { padding: 2rem 2rem; }
+    }
+
+    @media (max-width: 600px) {
+      .container { padding: 0 1.2rem; }
+      .section { padding: 3rem 0; }
+      .topbar { font-size: 0.7rem; padding: 0.4rem 1rem; letter-spacing: 0.04em; }
+      .nav-inner { padding: 0.5rem 1rem; }
+      .nav-logo img { height: 60px; }
+      .nav-brand-name { font-size: 1rem; }
+      .hero { min-height: 100svh; }
+      .hero-content { padding: 3rem 1.2rem; }
+      .hero-badge { font-size: 0.65rem; letter-spacing: 0.15em; padding: 0.35rem 1rem; }
+      .hero-title { font-size: clamp(2.4rem, 14vw, 3.5rem); }
+      .hero-subtitle { font-size: clamp(1rem, 5vw, 1.4rem); }
+      .hero-tagline { font-size: 0.93rem; }
+      .hero-btns { flex-direction: column; align-items: center; gap: 0.75rem; }
+      .hero-btns .btn { width: 100%; max-width: 280px; text-align: center; }
+      .hero-scroll { display: none; }
+      .welcome-strip p { font-size: 0.75rem; letter-spacing: 0.06em; }
+      .home-about { padding: 3.5rem 0; }
+      .home-about-inner { gap: 2rem; }
+      .home-about-text h3 { font-size: 1.7rem; }
+      .img-placeholder, .home-about-img img { height: 260px; box-shadow: 6px 6px 0 var(--gold-pale), 8px 8px 0 1px var(--gold); }
+      .home-product { padding: 3.5rem 0; }
+      .home-product-inner { display: flex; flex-direction: column; gap: 2rem; }
+      .home-product-text h3 { font-size: 1.7rem; }
+      .stats-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .stat-num { font-size: 2.4rem; }
+      .page-hero { padding: 3.5rem 1.2rem 2.5rem; }
+      .page-hero h1 { font-size: clamp(2rem, 10vw, 3rem); }
+      .page-hero p { font-size: 0.95rem; }
+      .goats-section { padding: 3rem 0; }
+      .goats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .goat-card-img, .goat-card-img-placeholder { height: 220px; }
+      .products-section { padding: 3rem 0; }
+      .shelf-display-img { max-height: 300px; }
+      .shelf-display-img-placeholder { height: 260px; }
+      .shelf-display-body { padding: 1.5rem 1.2rem; }
+      .shelf-display-name { font-size: 1.5rem; }
+      .shelf-display-tagline { font-size: 0.95rem; }
+      .shelf-display-desc { font-size: 0.93rem; }
+      .benefits-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .about-story { padding: 3rem 0; }
+      .about-story-inner { gap: 2rem; }
+      .about-img-main, .img-placeholder.about-img-main { height: 260px !important; }
+      .about-text h2 { font-size: 1.7rem; }
+      .values-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: 0.4rem; }
+      .btn { padding: 0.75rem 1.6rem; font-size: 0.8rem; }
+      .section-title { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+      .divider { max-width: 220px; }
+    }
+
+    @media (max-width: 380px) {
+      .hero-title { font-size: 2.2rem; }
+      .nav-logo img { height: 50px; }
+      .topbar { font-size: 0.65rem; }
+    }
+
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <p>📞 Give us a call: <a href="tel:3642086342">364-208-6342</a> &nbsp;|&nbsp; 📍 Columbia, Kentucky &nbsp;|&nbsp; 🧼 Handcrafted Goat Milk Soap</p>
+  </div>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-logo" onclick="showPage('home')">
+        <img src="stotts-logo.png" alt="Stotts Goat Farm Logo" style="height:90px;width:auto;"/>
+        <div class="nav-brand">
+          <span class="nav-brand-name">STOTTS</span>
+          <span class="nav-brand-sub">Goat Farm</span>
+        </div>
+      </div>
+      <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a onclick="showPage('home')" class="active" id="nav-home">Home</a></li>
+        <li><a onclick="showPage('goats')" id="nav-goats">Our Goats</a></li>
+        <li><a onclick="showPage('products')" id="nav-products">Products</a></li>
+        <li><a onclick="showPage('about')" id="nav-about">About Us</a></li>
+        <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <section class="hero">
+      <div class="hero-bg-fallback"></div>
+      <!-- HERO BACKGROUND IMAGE: uncomment and set your file:
+           <div class="hero-bg" style="background-image: url('hero.jpg');"></div> -->
+      <div class="hero-content container">
+        <div class="hero-badge">Columbia, Kentucky · Right Here on the Farm</div>
+        <h1 class="hero-title">Stotts<br/><em>Goat Farm</em></h1>
+        <p class="hero-subtitle">Crafted with care, Guided by faith.</p>
+        <p class="hero-tagline">We make goat milk soap right here on our little farm in Columbia, Kentucky. Nothing fancy, just real ingredients and a whole lot of care.</p>
+        <div class="hero-btns">
+          <button class="btn btn-gold" onclick="showPage('products')">See Our Soaps</button>
+          <button class="btn btn-outline" style="color:var(--brown);border-color:var(--brown);" onclick="showPage('goats')">Meet the Goats</button>
+        </div>
+      </div>
+      <div class="hero-scroll">Scroll</div>
+    </section>
+
+    <div class="welcome-strip">
+      <p>🐐 &nbsp; All Natural · Kentucky Proud · Made Right Here on the Farm &nbsp; 🧼</p>
+    </div>
+
+    <section class="home-about">
+      <div class="container">
+        <div class="home-about-inner">
+          <div class="home-about-img reveal">
+            <!-- HOME FARM PHOTO: replace div below with <img src="farm.jpg" ... /> -->
+            <img id="HOME_FARM_IMAGE" src="" alt="Farm Photo" style="display:none;width:100%;height:420px;object-fit:cover;border-radius:2px;box-shadow:12px 12px 0 var(--gold-pale), 14px 14px 0 1px var(--gold);" />
+            <div class="img-placeholder" id="HOME_FARM_IMAGE_placeholder"><span>📷</span>HOME_FARM_IMAGE</div>
+          </div>
+          <div class="home-about-text reveal">
+            <p class="section-subtitle">Our Story</p>
+            <h3>A Little Farm with a Lot of Heart</h3>
+            <p>We are the Stotts family, and we run a small goat farm right outside of Columbia, Kentucky. It started because we just love animals and being outside, and it grew into something we are really proud of.</p>
+            <p>We make our goat milk soap right here at home using milk from our own goats. We know exactly what goes into every bar, and we would not have it any other way.</p>
+            <div class="divider"><span class="divider-icon">✦</span></div>
+            <button class="btn btn-primary" onclick="showPage('about')">Read Our Story</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-product">
+      <div class="container">
+        <div class="home-product-inner">
+          <div class="home-product-text reveal">
+            <p class="section-subtitle">Our Soap</p>
+            <h3>Goat Milk Soap Made Fresh on the Farm</h3>
+            <p>Our soap is made with real milk from our own goats. It lathers up creamy and smooth, and it is gentle enough for the whole family. No weird chemicals, just simple stuff that works.</p>
+            <ul>
+              <li>Rich in natural vitamins A, B, C, D and E</li>
+              <li>Gentle enough for sensitive skin</li>
+              <li>Made in small batches at home</li>
+              <li>Milk comes straight from our goats</li>
+              <li>No artificial preservatives or dyes</li>
+            </ul>
+            <button class="btn btn-gold" onclick="showPage('products')">View All Products</button>
+          </div>
+          <div class="reveal">
+            <!-- HOME SOAP PHOTO: replace div below with <img src="soap.jpg" ... /> -->
+            <img id="HOME_SOAP_IMAGE" src="" alt="Soap Photo" style="display:none;width:100%;height:420px;object-fit:cover;border-radius:2px;box-shadow:0 10px 40px rgba(45,22,6,0.15);" />
+            <div class="img-placeholder" id="HOME_SOAP_IMAGE_placeholder" style="box-shadow:0 10px 40px rgba(45,22,6,0.15);"><span>🧼</span>HOME_SOAP_IMAGE</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item reveal"><span class="stat-num">100%</span><div class="stat-label">All Natural Ingredients</div></div>
+          <div class="stat-item reveal"><span class="stat-num">KY</span><div class="stat-label">Made Right Here in Kentucky</div></div>
+          <div class="stat-item reveal"><span class="stat-num">♥</span><div class="stat-label">Family Owned and Operated</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="background:var(--white);text-align:center;border-top:2px solid var(--cream-dark);">
+      <div class="container">
+        <p class="section-subtitle">Want to Try Some?</p>
+        <h2 class="section-title reveal">Come See What the Fuss is About</h2>
+        <div class="divider reveal"><span class="divider-icon">🐐</span></div>
+        <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;" class="reveal">
+          <button class="btn btn-primary" onclick="showPage('products')">See Our Soaps</button>
+          <button class="btn btn-outline" onclick="showPage('contact')">Reach Out</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- OUR GOATS -->
+  <div class="page" id="page-goats">
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-label">Stotts Goat Farm</div>
+        <h1>Meet Our Goats 🐐</h1>
+        <p>These goats are the heart of everything we do. They live good lives out here in Columbia and their milk is what goes into every bar of soap we make.</p>
+      </div>
+    </section>
+
+    <section class="goats-section">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:3.5rem;">
+          <p class="section-subtitle">The Goats</p>
+          <h2 class="section-title">Say Hello to the Gang</h2>
+          <div class="divider"><span class="divider-icon">🐐</span></div>
+          <p style="max-width:580px;margin:0 auto;font-size:1rem;line-height:1.8;color:var(--text-light);">Every single one of these goats has a name and a personality to match. They are well fed, well loved, and they keep us busy every single day.</p>
+        </div>
+
+        <!-- GOAT PHOTOS: replace each placeholder div with <img class="goat-card-img" src="yourfile.jpg" alt="Name" /> -->
+        <div class="goats-grid">
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE1" src="" alt="Jingle" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE1_placeholder"><span>🐐</span>GOAT_IMAGE1</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Jingle</div>
+              <div class="goat-breed">1/2 Nubian · 1/2 Alpine Nanny</div>
+              <p class="goat-desc">Meet Jingle. Best friends with Copper. This 1/2 Nubian 1/2 Alpine nanny does not disappoint with personality and milk production. Very excited to meet her babies.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE2" src="" alt="Copper" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE2_placeholder"><span>🐐</span>GOAT_IMAGE2</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Copper</div>
+              <div class="goat-breed">1/2 Oberhasli · 1/2 Nubian</div>
+              <p class="goat-desc">Meet Copper. Best friends with Jingle. This girl has a can-do attitude and is very confident but gentle. We expect many great things from this girl and her babies in the upcoming weeks.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE3" src="" alt="Dottie" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE3_placeholder"><span>🐐</span>GOAT_IMAGE3</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Dottie</div>
+              <div class="goat-breed">Moon Spot Nubian Nanny</div>
+              <p class="goat-desc">Meet Dottie. A young moon spot Nubian nanny with a gentle nature and a love for adventure. She is always eager to explore new areas and make friends with the other goats.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE4" src="" alt="Babydoll" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE4_placeholder"><span>🐐</span>GOAT_IMAGE4</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Babydoll</div>
+              <div class="goat-breed">Nubian Nanny</div>
+              <p class="goat-desc">Meet Babydoll. Sister to Bambi, she tries her best to compete for our affections. A young and sweet Nubian nanny expecting her first babies in the upcoming weeks.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE5" src="" alt="Bambi" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE5_placeholder"><span>🐐</span>GOAT_IMAGE5</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Bambi</div>
+              <div class="goat-breed">Nubian</div>
+              <p class="goat-desc">Meet Bambi! She loves nothing more than to follow you around just for some scratches and pets. This young lady loves people and if not given attention will think nothing of putting her front hooves on your back to hopefully gain your affections once more.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE6" src="" alt="Daisy" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE6_placeholder"><span>🐐</span>GOAT_IMAGE6</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Daisy</div>
+              <div class="goat-breed">3/4 Saanen · 1/4 La Mancha</div>
+              <p class="goat-desc">A gentle nanny with a sweet disposition. Sister to Sugar, she is soon to be having some precious babies.</p>
+            </div>
+          </div>
+
+          <div class="goat-card reveal">
+            <img id="GOAT_IMAGE7" src="" alt="Sugar" style="display:none;" class="goat-card-img" />
+            <div class="goat-card-img-placeholder" id="GOAT_IMAGE7_placeholder"><span>🐐</span>GOAT_IMAGE7</div>
+            <div class="goat-card-body">
+              <div class="goat-name">Sugar</div>
+              <div class="goat-breed">3/4 Saanen · 1/4 La Mancha</div>
+              <p class="goat-desc">A sweet and gentle mother with a loving nature. She is known for her calm demeanor and affectionate personality.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="text-align:center;margin-top:3rem;" class="reveal">
+          <p style="font-size:0.9rem;color:var(--text-light);font-family:var(--font-ui);letter-spacing:0.05em;">Want to ask us something about the goats? Give us a call!</p>
+          <button class="btn btn-primary" style="margin-top:1rem;" onclick="showPage('contact')">Contact Us</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PRODUCTS -->
+  <div class="page" id="page-products">
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-label">Stotts Goat Farm</div>
+        <h1>Our Soaps 🧼</h1>
+        <p>Every bar is made right here at home in small batches. Real goat milk, real ingredients, and made with care.</p>
+      </div>
+    </section>
+
+    <section class="soap-benefits">
+      <div class="container">
+        <div class="benefits-grid">
+          <div class="benefit-item"><div class="benefit-icon">🌿</div><div class="benefit-title">All Natural</div><p class="benefit-text">No artificial chemicals or preservatives, ever.</p></div>
+          <div class="benefit-item"><div class="benefit-icon">🥛</div><div class="benefit-title">Real Goat Milk</div><p class="benefit-text">Milk straight from our own goats right here on the farm.</p></div>
+          <div class="benefit-item"><div class="benefit-icon">🤲</div><div class="benefit-title">Made by Hand</div><p class="benefit-text">Small batches made at home with attention to every bar.</p></div>
+          <div class="benefit-item"><div class="benefit-icon">💛</div><div class="benefit-title">Skin Friendly</div><p class="benefit-text">Packed with natural vitamins and gentle on sensitive skin.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products-section">
+      <div class="container">
+
+        <div class="products-intro">
+          <p class="section-subtitle">What We Make</p>
+          <h2 class="section-title">Stotts Farm Goat Milk Soap</h2>
+          <div class="divider"><span class="divider-icon">✦</span></div>
+          <p>Each bar is poured and cured right here at home. They lather up nice and creamy and leave your skin feeling really soft. We think you will love them.</p>
+        </div>
+
+        <!-- LARGE SHELF DISPLAY -->
+        <div class="shelf-display reveal">
+
+          <!-- SHELF IMAGE: replace the placeholder div below with:
+               <img class="shelf-display-img" src="shelf.jpg" alt="Stotts Goat Farm Soap" /> -->
+          <img id="SOAP_IMAGE1" src="" alt="Stotts Goat Farm Soap" style="display:none;" class="shelf-display-img" />
+          <div class="shelf-display-img-placeholder" id="SOAP_IMAGE1_placeholder">
+            <span>🧼</span>
+            SOAP_IMAGE1
+          </div>
+
+          <div class="shelf-display-body">
+            <div class="shelf-badges">
+              <span class="shelf-badge">All Natural</span>
+              <span class="shelf-badge">Goat Milk</span>
+              <span class="shelf-badge">Handmade in Kentucky</span>
+              <span class="shelf-badge">Family Made</span>
+            </div>
+            <div class="shelf-display-name">Stotts Farm Goat Milk Soap</div>
+            <div class="shelf-display-tagline">Fresh from our farm. Good for your skin.</div>
+            <p class="shelf-display-desc">
+              Made right here in Columbia, Kentucky using fresh milk from our own herd of seven goats.
+              Our soap is rich and creamy, full of natural vitamins, and gentle enough for the whole family.
+              No fillers, no artificial anything. Just simple ingredients we feel good about putting on your skin.
+              Every bar is poured by hand and cured with care before it ever leaves our farm.
+            </p>
+            <button class="btn btn-primary" onclick="showPage('contact')">Ask About Our Soap</button>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:3.5rem;" class="reveal">
+          <p style="font-family:var(--font-ui);font-size:0.9rem;color:var(--text-light);margin-bottom:1rem;">Got a question about our soaps? Feel free to reach out anytime.</p>
+          <button class="btn btn-gold" onclick="showPage('contact')">Contact Us</button>
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="page" id="page-about">
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-label">Stotts Goat Farm</div>
+        <h1>Our Story</h1>
+        <p>We are just a family that loves goats, loves the outdoors, and wanted to make something we could be proud of.</p>
+      </div>
+    </section>
+
+    <section class="about-story">
+      <div class="container">
+        <div class="about-story-inner">
+          <div class="about-img-stack reveal">
+            <!-- ABOUT PHOTO: replace div below with <img class="about-img-main" src="family.jpg" alt="The Stotts Family" /> -->
+            <img id="ABOUT_IMAGE" src="" alt="About Photo" style="display:none;" class="about-img-main" />
+            <div class="img-placeholder about-img-main" id="ABOUT_IMAGE_placeholder" style="height:460px;"><span>📷</span>ABOUT_IMAGE</div>
+          </div>
+          <div class="about-text reveal">
+            <p class="section-subtitle">Who We Are</p>
+            <h2>The Stotts Family and Their Farm</h2>
+            <p>We are a small family farm located just outside of Columbia, Kentucky. This whole thing started because we love animals and we love being outside. One thing led to another and here we are making goat milk soap and having the time of our lives doing it.</p>
+            <p>Every morning we are out there feeding the goats, checking on them, and taking care of the land. It is a lot of work but we genuinely enjoy every bit of it. These animals are part of our family.</p>
+            <p>The soap came naturally from all of that. We had the milk, we had the time, and we wanted to put it to good use. Every bar we make has a little piece of this farm in it and we hope you can feel that.</p>
+            <div class="values-grid">
+              <div class="value-card"><h4>🌾 Farm Fresh</h4><p>Everything we make starts right here on our land in Columbia, KY.</p></div>
+              <div class="value-card"><h4>💛 Family First</h4><p>We are a small family operation and every product has a personal touch.</p></div>
+              <div class="value-card"><h4>🐐 Animal Care</h4><p>Our goats have room to roam, play, and just be goats. They are happy and healthy.</p></div>
+              <div class="value-card"><h4>🌿 All Natural</h4><p>We only use ingredients we feel good about. Simple stuff that is good for your skin.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:var(--cream-dark);padding:5rem 0;text-align:center;border-top:2px solid var(--cream-mid);border-bottom:2px solid var(--cream-mid);">
+      <div class="container">
+        <p class="section-subtitle" style="color:var(--gold);">Our Mission</p>
+        <h2 style="font-family:var(--font-display);font-size:clamp(1.4rem,2.8vw,2rem);color:var(--brown);font-weight:600;max-width:760px;margin:0 auto 1.5rem;line-height:1.6;font-style:italic;" class="reveal">
+          "At Stotts Goat Farm we think that good soap starts with animals that are treated very well. We use milk from our seven goats to make soap by hand. This soap is good for your skin. It is simple. It shows how much we care about what we do. We care about every step of the way, from the fields where the goats live to the soap that we make."
+        </h2>
+        <div class="divider reveal"><span class="divider-icon">✦</span></div>
+        <button class="btn btn-primary reveal" onclick="showPage('contact')" style="margin-top:1rem;">Come Visit or Call Us</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="page-contact">
+    <section class="page-hero">
+      <div class="container">
+        <div class="page-hero-label">Stotts Goat Farm</div>
+        <h1>Get in Touch</h1>
+        <p>We would love to hear from you. Whether you have a question about our soap or just want to talk goats, give us a call.</p>
+      </div>
+    </section>
+
+    <section style="background:var(--white);padding:4rem 0;">
+      <div class="container" style="max-width:600px;text-align:center;">
+        <p class="section-subtitle">Contact Info</p>
+        <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--brown);margin-bottom:2rem;">How to Reach Us</h2>
+        <div style="display:flex;flex-direction:column;gap:1.5rem;align-items:center;">
+          <div style="display:flex;align-items:center;gap:1rem;background:var(--cream);padding:1.25rem 2rem;border-radius:2px;width:100%;max-width:420px;border-left:4px solid var(--gold);">
+            <div style="font-size:1.6rem;">📞</div>
+            <div style="text-align:left;">
+              <div style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:0.2rem;">Phone</div>
+              <a href="tel:3642086342" style="font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--brown);">364-208-6342</a>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;background:var(--cream);padding:1.25rem 2rem;border-radius:2px;width:100%;max-width:420px;border-left:4px solid var(--gold);">
+            <div style="font-size:1.6rem;">📍</div>
+            <div style="text-align:left;">
+              <div style="font-family:var(--font-ui);font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:0.2rem;">Location</div>
+              <div style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;color:var(--brown);">Columbia, Kentucky</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section style="background:var(--cream-dark);padding:4rem 0;border-top:2px solid var(--cream-mid);">
+      <div class="container">
+        <div style="text-align:center;margin-bottom:2rem;">
+          <h2 style="font-family:var(--font-display);font-size:1.8rem;font-weight:700;color:var(--brown);">Find Us in Columbia, KY</h2>
+        </div>
+        <!-- GOOGLE MAPS EMBED -->
+        <div class="map-embed">
+          <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;width:100%;">
+            <iframe
+              style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://maps.google.com/maps?q=484%20Slick%20Rock%20Road%20West&output=embed&z=16">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-gold-bar"></div>
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-brand-name">STOTTS</div>
+          <div class="footer-brand-sub">Goat Farm · Columbia, Kentucky</div>
+          <div style="font-family:var(--font-display);font-style:italic;color:var(--gold-light);font-size:0.95rem;margin-bottom:1rem;">Crafted with care, Guided by faith.</div>
+          <p class="footer-brand-desc">We are a small family farm in Columbia, Kentucky making goat milk soap from scratch. Come see us sometime.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a onclick="showPage('home')">Home</a></li>
+            <li><a onclick="showPage('goats')">Our Goats</a></li>
+            <li><a onclick="showPage('products')">Products</a></li>
+            <li><a onclick="showPage('about')">About Us</a></li>
+            <li><a onclick="showPage('contact')">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <address>
+            Columbia, Kentucky<br/>
+            <a href="tel:3642086342" style="color:rgba(247,237,218,0.65);">364-208-6342</a>
+          </address>
+        </div>
+      </div>
+      <hr class="footer-divider"/>
+      <div class="footer-bottom">
+        <span>© 2025 Stotts Goat Farm · Columbia, Kentucky · All Rights Reserved</span>
+        <span>Made with love in Kentucky</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* =============================================
+       IMAGE CONFIGURATION — EDIT YOUR PHOTOS HERE
+       Type the filename next to each variable.
+       The file must be in the same folder as index.html.
+       Leave as "" if you don't have that photo yet.
+    ============================================= */
+    const IMAGES = {
+      HOME_FARM_IMAGE : "Farm.jpg",
+      HOME_SOAP_IMAGE : "Shelf.jpg",
+      ABOUT_IMAGE     : "Farm.jpg",
+      GOAT_IMAGE1     : "Jingle.jpg",
+      GOAT_IMAGE2     : "Copper.jpg",
+      GOAT_IMAGE3     : "Dottie.jpg",
+      GOAT_IMAGE4     : "Babydoll.jpg",
+      GOAT_IMAGE5     : "Bambi.jpg",
+      GOAT_IMAGE6     : "Daisy.jpg",
+      GOAT_IMAGE7     : "Sugar.jpg",
+      SOAP_IMAGE1     : "Shelf.jpg",
+    };
+
+    function loadImages() {
+      Object.entries(IMAGES).forEach(([id, filename]) => {
+        if (!filename) return;
+        const img = document.getElementById(id);
+        const placeholder = document.getElementById(id + '_placeholder');
+        if (img) { img.src = filename; img.style.display = 'block'; }
+        if (placeholder) placeholder.style.display = 'none';
+      });
+    }
+
+    const pages = ['home', 'goats', 'products', 'about', 'contact'];
+
+    function showPage(id) {
+      pages.forEach(p => {
+        document.getElementById('page-' + p).classList.remove('active');
+        const navEl = document.getElementById('nav-' + p);
+        if (navEl) navEl.classList.remove('active');
+      });
+      document.getElementById('page-' + id).classList.add('active');
+      const nav = document.getElementById('nav-' + id);
+      if (nav) nav.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.getElementById('navLinks').classList.remove('open');
+      setTimeout(observeReveal, 100);
+    }
+
+    function toggleMenu() {
+      document.getElementById('navLinks').classList.toggle('open');
+    }
+
+    function observeReveal() {
+      const reveals = document.querySelectorAll('.page.active .reveal');
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        reveals.forEach(el => obs.observe(el));
+      } else {
+        reveals.forEach(el => el.classList.add('visible'));
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadImages();
+      observeReveal();
+    });
+  </script>
+
+</body>
+</html>
